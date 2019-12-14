@@ -100,7 +100,7 @@ class BudgetView(generics.RetrieveAPIView):
         day_of_the_week = (today - week_start).days + 1
         week_total = self.queryset.filter(date__gt=week_start).aggregate(total=Coalesce(Sum("amount"), 0))
         week_data = calculate_budgets(week_total["total"], day_of_the_week, 7, per_day)
-
+        print(week_total)
         month_start = today.replace(day=1)
         num_month_days = calendar.monthrange(today.year, today.month)[1]
         month_total = self.queryset.filter(date__gt=month_start).aggregate(total=Coalesce(Sum("amount"), 0))
