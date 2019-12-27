@@ -5,6 +5,7 @@ import calendar
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import status
+from rest_framework.permissions import IsAuthenticated
 
 from django.db.models.functions import Coalesce
 from django.db.models import Sum
@@ -89,6 +90,7 @@ class ExpenseDetailView(generics.RetrieveUpdateDestroyAPIView):
 class BudgetView(generics.RetrieveAPIView):
     """Class to return budget numbers for the week and month."""
 
+#    permission_classes = (IsAuthenticated,)
     queryset = Expense.objects.all()
 
     def get(self, request, *args, **kwargs):
@@ -100,7 +102,6 @@ class BudgetView(generics.RetrieveAPIView):
         day_of_the_week = (today - week_start).days + 1
         week_total = self.queryset.filter(date__gt=week_start).aggregate(total=Coalesce(Sum("amount"), 0))
         week_data = calculate_budgets(week_total["total"], day_of_the_week, 7, per_day)
-        print(week_total)
         month_start = today.replace(day=1)
         num_month_days = calendar.monthrange(today.year, today.month)[1]
         month_total = self.queryset.filter(date__gt=month_start).aggregate(total=Coalesce(Sum("amount"), 0))
