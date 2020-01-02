@@ -33,8 +33,4 @@ install:
 script:
 - make build
 - make test
-after_success:
-  - coveralls
-- stage: deploy
-  deploy:
-    - gcloud -q app deploy app.yaml --promote
+- gcloud -q app deploy app.yaml --promote
