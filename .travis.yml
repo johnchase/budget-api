@@ -10,7 +10,7 @@ deploy:
   provider: gae
   skip_cleanup: true
   keyfile: client-secret.json
-  project: budget-app
+  project: budget-app-263502
   default: true
   on:
     all_branches: true
