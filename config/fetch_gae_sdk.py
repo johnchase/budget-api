@@ -25,7 +25,7 @@ Current releases are listed here:
 
 import json
 import os
-import StringIO
+from io import StringIO
 import sys
 import urllib2
 import zipfile
