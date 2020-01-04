@@ -15,6 +15,7 @@ jobs:
         grep -q 1 || psql -U postgres -c "CREATE DATABASE travis;"
     install:
     - make install
+    - pip install coveralls pyyaml flake8-docstrings
     script:
     - make build
     - make test
