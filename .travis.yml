@@ -5,6 +5,7 @@ before_install:
 install:
 - make install
 script:
+- python manage.py collectstatic
 - echo "No Script to run"
 deploy:
   provider: gae
@@ -13,4 +14,4 @@ deploy:
   project: budget-app-263502
   default: true
   on:
-    all_branches: true
+    branche: master
