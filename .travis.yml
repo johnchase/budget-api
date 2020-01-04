@@ -6,7 +6,13 @@ jobs:
     name: Backend Tests
     python:
     - 3.6
+    env:
+    - DJANGO=2.1.7
+    - DB=postgresql
     - DJANGO_SETTINGS_MODULE=config.production
+    before_script:
+      - psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'travis'" |
+        grep -q 1 || psql -U postgres -c "CREATE DATABASE travis;"
     install:
     - make install
     script:

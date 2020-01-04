@@ -75,26 +75,26 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-if "TRAVIS" in os.environ:
-    DATABASES = {
+if "travis" in os.environ:
+    databases = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "portal",
-            "USER": "postgres",
-            "PASSWORD": "",
-            "HOST": "localhost",
-            "PORT": "",
+            "engine": "django.db.backends.postgresql",
+            "name": "travis",
+            "user": "postgres",
+            "password": "",
+            "host": "localhost",
+            "port": "",
         }
     }
 else:
-    DATABASES = {
+    databases = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.environ.get("DB_NAME"),
-            "USER": os.environ.get("DB_USER"),
-            "PASSWORD": os.environ.get("DB_PASSWORD"),
-            "HOST": os.environ.get("DB_HOST"),
-            "PORT": "5432",
+            "engine": "django.db.backends.postgresql",
+            "name": os.environ.get("db_name"),
+            "user": os.environ.get("db_user"),
+            "password": os.environ.get("db_password"),
+            "host": os.environ.get("db_host"),
+            "port": "5432",
         }
     }
 
