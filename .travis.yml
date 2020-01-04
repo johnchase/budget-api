@@ -1,40 +1,19 @@
 dist: trusty
-sudo: false
-language: python
-# Cache our Gcloud SDK between commands
-cache:
-  directories:
-  - "$HOME/google-cloud-sdk/"
-env:
-# Make sure gcloud command is on our PATH and the App Engine SDK is in the Python path
-- GAE_PYTHONPATH=${HOME}/.cache/google_appengine PATH=$PATH:${HOME}/google-cloud-sdk/bin PYTHONPATH=${PYTHONPATH}:${GAE_PYTHONPATH} CLOUDSDK_CORE_DISABLE_PROMPTS=1
-before_install:
-# Install Google App Engine Python SDK
-- if [ ! -d "${GAE_PYTHONPATH}" ]; then
-    python config/fetch_gae_sdk.py $(dirname "${GAE_PYTHONPATH}");
-  fi
-# [START auth]
-# Decrypt the credentials we added to the repo using the key we added with the Travis command line tool
-- openssl aes-256-cbc -K $encrypted_d790e4e029ac_key -iv $encrypted_d790e4e029ac_iv -in credentials.tar.gz.enc -out credentials.tar.gz -d 
-# If the SDK is not already cached, download it and unpack it
-- if [ ! -d ${HOME}/google-cloud-sdk ]; then
-     curl https://sdk.cloud.google.com | bash;
-  fi
-- tar -xzf credentials.tar.gz
-- mkdir -p lib
-# Here we use the decrypted service account credentials to authenticate the command line tool
-- gcloud auth activate-service-account --key-file client-secret.json
-# [END auth]
-install:
-# Set the correct project to deploy to
-- gcloud config set project budget
-# Install the Python dependencies
-- make install
-script:
-- make build
-- make test
-after_success:
-  - coveralls
-- stage: deploy
-  deploy:
-    - gcloud -q app deploy app.yaml --promote
+jobs:
+  include:
+  - stage: test
+    language: python
+    name: Backend Tests
+    python:
+    - 3.6
+    - DJANGO_SETTINGS_MODULE=config.production
+    install:
+    - make install
+    script:
+    - make build
+    - make test
+    after_success:
+      - coveralls
+    cache:
+      directories:
+      - "$HOME/.cache/pip"
