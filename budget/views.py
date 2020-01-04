@@ -43,49 +43,6 @@ class ExpenseDetailView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "pk"
 
 
-#    def get(self, request, *args, **kwargs):
-#        """Retrieve a single expense."""
-#        try:
-#            expense = self.queryset.get(pk=kwargs["pk"])
-#            return Response(ExpenseSerializer(expense).data)
-#        except Expense.DoesNotExist:
-#            return Response(
-#                    data={
-#                        "message": "Expense with id: {} does not exist".format(kwargs["pk"])
-#                        },
-#                    status=status.HTTP_404_NOT_FOUND
-#                    )
-#
-#    def put(self, request, *args, **kwargs):
-#        """Update a single expense."""
-#        try:
-#            expense = self.queryset.get(pk=kwargs["pk"])
-#            serializer = ExpenseSerializer()
-#            updated_expense = serializer.update(expense, request.data)
-#            return Response(ExpenseSerializer(updated_expense).data)
-#        except Expense.DoesNotExist:
-#            return Response(
-#                    data={
-#                        "message": "Expense with id: {} does not exist".format(kwargs["pk"])
-#                        },
-#                    status=status.HTTP_404_NOT_FOUND
-#                    )
-#
-#    def delete(self, request, *args, **kwargs):
-#        """Delete an expense."""
-#        try:
-#            expense = self.queryset.get(pk=kwargs["pk"])
-#            expense.delete()
-#            return Response(status=status.HTTP_204_NO_CONTENT)
-#        except Expense.DoesNotExist:
-#            return Response(
-#                    data={
-#                        "message": "Expense with id: {} does not exist".format(kwargs["pk"])
-#                        },
-#                    status=status.HTTP_404_NOT_FOUND
-#                    )
-
-
 class BudgetView(generics.RetrieveAPIView):
     """Class to return budget numbers for the week and month."""
 
