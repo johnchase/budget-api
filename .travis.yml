@@ -11,8 +11,8 @@ jobs:
     - DB=postgresql
     - DJANGO_SETTINGS_MODULE=config.settings.production
     before_script:
-      - psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'travis'" |
-        grep -q 1 || psql -U postgres -c "CREATE DATABASE travis;"
+    - psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'travis'" |
+      grep -q 1 || psql -U postgres -c "CREATE DATABASE travis;"
     install:
     - make install
     - pip install coveralls pyyaml flake8-docstrings
@@ -20,7 +20,19 @@ jobs:
     - make build
     - make test
     after_success:
-      - coveralls
+    - coveralls
     cache:
       directories:
       - "$HOME/.cache/pip"
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: AKIA6QW6FCJ6ZUF2XSFJ
+  secret_access_key:
+    secure: K75N6P3n9GAmXvHpZ+d8REEZH33ELOpRj8aPL2RhKfJbwxM4aHUlLUJstJ5Rjs09smTEG2MrzgVAFaGZKsmsXdcBqvV6T2af9lw/6iA/be6Io2MZaQdc8jDStn9wfFWQLC7ORAht/hJNyM/y+8D8mOXabk6ETthWeO2JzwvYpfpMVIlaWJ4xg2DGajKVxTdox0jMyZJgVJWGuXqUB+xqVu0oTEy85WV/gW3ZGBFO26NKz/EqUJhpmS4pkO3uRdBwqMRO87M+acDP+aYGCLG2LHpeDCMH98/N7bC9NoPKuFrdDSr3HdtTqXaFouw3dosyQ9Wy9ukGW5JmAVrzRUwO63XMWyP2qXSJ1cjb0ZUp3rT/10/6hdUiJrgLWGEwBhShv5emm/15rTQaQiw0PnFt2cDW+fpab/VOIdSO9Vv1XimO/M4uIz0rLQp7l5al1mZr5un01V9WYPA8rwgreZwppqAHY9tYMsBFcL5MTJh7uIY0qmlZgb9szBedLD/TGZEnee9JK70oO/PVlFKEQftwldNdev5eN4A9q9O7j/Ugl7bo6EAym6zrZVdLEoN6K0gcbjp/MA6XFubFE9JjnW2+3rf9SfFThuuZtEYlTUSNze+AfHx+tLN17ety8k0RVLafAIiCVkMDuI0DY2CbpT60ZcWZBiVhTFBBb4VtYHXaaLQ=
+  region: us-west-1
+  app: budget
+  env: production
+  bucket_name: budget-backend 
+  on:
+    repo: johnchase/budget-api
+    branch: aws-deploy
