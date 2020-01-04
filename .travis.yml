@@ -32,7 +32,7 @@ deploy:
   region: us-west-1
   app: budget
   env: production
-  bucket_name: budget-backend 
+  bucket_name: elasticbeanstalk-us-west-1-997972054653
   on:
     repo: johnchase/budget-api
     branch: aws-deploy
