@@ -78,23 +78,23 @@ WSGI_APPLICATION = "config.wsgi.application"
 if "travis" in os.environ:
     DATABASES = {
         "default": {
-            "engine": "django.db.backends.postgresql",
-            "name": "travis",
-            "user": "postgres",
-            "password": "",
-            "host": "localhost",
-            "port": "",
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "travis",
+            "USER": "postgres",
+            "PASSWORD": "",
+            "HOST": "localhost",
+            "PORT": "",
         }
     }
 else:
     DATABASES = {
         "default": {
-            "engine": "django.db.backends.postgresql",
-            "name": os.environ.get("db_name"),
-            "user": os.environ.get("db_user"),
-            "password": os.environ.get("db_password"),
-            "host": os.environ.get("db_host"),
-            "port": "5432",
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("DB_NAME"),
+            "USER": os.environ.get("DB_USER"),
+            "PASSWORD": os.environ.get("DB_PASSWORD"),
+            "HOST": os.environ.get("DB_HOST"),
+            "kORT": "5432",
         }
     }
 

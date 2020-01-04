@@ -1,7 +1,10 @@
 """Test module for all views."""
-from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
 from rest_framework.views import status
+
+from django.contrib.auth.models import User
+from django.urls import reverse
+
 from budget.models import Expense
 from budget.serializers import ExpenseSerializer
 
@@ -12,6 +15,14 @@ class BaseViewTest(APITestCase):
     """Base class test for test classes."""
 
     client = APIClient()
+
+    def setUp(self):
+        """Test setup."""
+        self.user = User.objects.create_superuser(
+            username="test_user", email="test@mail.com", password="testing", first_name="test", last_name="user"
+        )
+
+        self.client.login(username="test_user", password="testing")
 
     @staticmethod
     def create_expense(amount="", date="", category="", business=""):
