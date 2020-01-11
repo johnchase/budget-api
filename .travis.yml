@@ -30,8 +30,8 @@ deploy:
   secret_access_key:
     secure: IUoZOWvLZMEwJxYmLuMU3IXY2WC9y3ztJTFJe1VrJ1yoz0+1QJ5+7CV+y2dx4LfEr9qO2sV11sHOAhLCC55h3dicPR3si7if1EEn6dRWD2qxgr9829aPa02pvpWWloNHkITcfKCgLmvWM5eIIVD3vPb4w2XE6iT411z+r0AUA4ESiVg8oEKTwGQBNXGeKE3Th7/Q5R0bxzM1EFKOrXSoNJu+oxnRejt2UcEg+Qi98D0jcIlB8lXthrRn+/OfVQmv3yO3IS1yU4CadSqkFC2fghUHg9CQYrQqWFXo2KGK9iCIVzwMLjDQzv+eTDXXkiPbO87K2hFuuEpoUg6i/7It6DVAzQyKAPsESBHRZKv42PDlq1/riDZHzBRL+6hCU3uyVgEH6mQmQfZtSjxr0OYQJUl0BaoETvA/TtAE7+H+VQ9iVCOURwSfJCdewOvHyo3XaRL3Oe5tZ96AcbQ7ors0urp1psaStdSnUwOY+yTeWLtpYrcGr/MTLgDPhTX47Z15MWS0LruP7HSabitDamBawDf9JNiGN68cY1I8YyJZvC62Twrrgv/TAH9d7HY6dVQTFWYr/0DlqSXJYQGI2C56nwDCz150ml5YqhZ1DkMmcTjnDe59RM7UKIazeRTcLM6Dl/Fv/swPB1kwwJiRhRAqbJplL2HKw0ZzduhIj7RbAQc=
   region: us-west-1
-  app: budget-api
-  env: BudgetApi-env
+  app: budget
+  env: Budget-env
   bucket: elasticbeanstalk-us-west-1-997972054653
   on:
     repo: johnchase/budget-api
