@@ -18,11 +18,10 @@ from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
-from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path(r"", include("budget.urls")),
-    path(r"api-token-auth/", csrf_exempt(obtain_jwt_token)),
-    path(r"api-token-refresh/", csrf_exempt(refresh_jwt_token)),
+    path('admin/', admin.site.urls),
+    path(r'', include('budget.urls')),
+    path(r'api-token-auth/', obtain_jwt_token),
+    path(r'api-token-refresh/', refresh_jwt_token),
 ]
