@@ -1,6 +1,6 @@
 from .base import *  # noqa: F403, F401
 
-ALLOWED_HOSTS = ['production.ip2xnukzqq.us-west-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['production-env.ip2xnukzqq.us-west-1.elasticbeanstalk.com']
 
 DEBUG = False
 
