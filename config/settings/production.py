@@ -1,6 +1,6 @@
 from .base import *  # noqa: F403, F401
 
-ALLOWED_HOSTS = ['BudgetApi-env.ip2xnukzqq.us-west-1.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['api.johnhchase.com']
 
 DEBUG = False
 
