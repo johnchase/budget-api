@@ -4,9 +4,9 @@ ALLOWED_HOSTS = ['api.johnhchase.com']
 
 DEBUG = False
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
-        "https://budgetx.johnhchase.com"
+        "https://budget.johnhchase.com"
 )
 
 CORS_ALLOW_CREDENTIALS = True
