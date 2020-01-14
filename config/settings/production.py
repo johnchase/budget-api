@@ -1,17 +1,16 @@
 from .base import *  # noqa: F403, F401
 
-ALLOWED_HOSTS = ['api.johnhchase.com']
+ALLOWED_HOSTS = ["api.johnhchase.com"]
 
 DEBUG = False
 
 CORS_ORIGIN_ALLOW_ALL = False
-CORS_ORIGIN_WHITELIST = (
-        "https://budget.johnhchase.com"
-)
+CORS_ORIGIN_WHITELIST = "https://budget.johnhchase.com"
 
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = (
+    "Access-Control-Allow-Origin",
     "accept",
     "accept-encoding",
     "authorization",
