@@ -52,7 +52,7 @@ class BudgetView(generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         """Retrieve a single expense."""
         today = datetime.date.today()
-        per_day = 68.59
+        per_day = 64.55
 
         week_start = today - datetime.timedelta(days=today.weekday())
         day_of_the_week = (today - week_start).days + 1
