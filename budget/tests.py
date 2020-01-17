@@ -4,6 +4,7 @@ from rest_framework.views import status
 
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.conf import settings
 
 from budget.models import Expense
 from budget.serializers import ExpenseSerializer
@@ -48,11 +49,30 @@ class GetAllExpensesTest(BaseViewTest):
 class GetBudgetsTest(BaseViewTest):
     """Test class for budget view."""
 
-    @freeze_time("2000-01-05")
+    @freeze_time("2020-01-01")
     def test_get_budget(self):
         """Ensure that all budget with no expenses is correct."""
         response = self.client.get(reverse("budget"))
+        saved = round(settings.ALLOWANCE * 3, 2)
+        left_per_day = round((settings.ALLOWANCE * 7)/5, 2)
         expected = {
-            "week": {"total": 0.0, "perDay": 0.0, "leftPerDay": 96.03, "saved": 205.77},
-            "month": {"total": 0.0, "perDay": 0.0, "leftPerDay": 78.75, "saved": 342.95}, }
+            "week": {"total": 0.0, "perDay": 0.0, "leftPerDay": left_per_day, "saved": saved},
+            "month": {"total": 0.0, "perDay": 0.0, "leftPerDay": settings.ALLOWANCE, "saved": settings.ALLOWANCE},
+            "year": settings.ALLOWANCE,
+        }
+
+        self.assertEqual(response.data, expected)
+
+    @freeze_time("2020-01-01")
+    def test_get_budget_1(self):
+        """Ensure that all budget with no expenses is correct."""
+        response = self.client.get(reverse("budget"))
+        saved = round(settings.ALLOWANCE * 3, 2)
+        left_per_day = round((settings.ALLOWANCE * 7)/5, 2)
+        expected = {
+            "week": {"total": 0.0, "perDay": 0.0, "leftPerDay": left_per_day, "saved": saved},
+            "month": {"total": 0.0, "perDay": 0.0, "leftPerDay": settings.ALLOWANCE, "saved": settings.ALLOWANCE},
+            "year": settings.ALLOWANCE
+        }
+
         self.assertEqual(response.data, expected)
