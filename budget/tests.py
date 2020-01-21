@@ -54,11 +54,11 @@ class GetBudgetsTest(BaseViewTest):
         """Ensure that all budget with no expenses is correct."""
         response = self.client.get(reverse("budget"))
         saved = round(settings.ALLOWANCE * 3, 2)
-        left_per_day = round((settings.ALLOWANCE * 7)/5, 2)
+        left_per_day = round((settings.ALLOWANCE * 7) / 5, 2)
         expected = {
             "week": {"total": 0.0, "perDay": 0.0, "leftPerDay": left_per_day, "saved": saved},
             "month": {"total": 0.0, "perDay": 0.0, "leftPerDay": settings.ALLOWANCE, "saved": settings.ALLOWANCE},
-            "year": settings.ALLOWANCE,
+            "year": {"leftPerDay": settings.ALLOWANCE, "perDay": 0.0, "saved": settings.ALLOWANCE, "total": 0.0},
         }
 
         self.assertEqual(response.data, expected)
@@ -68,11 +68,11 @@ class GetBudgetsTest(BaseViewTest):
         """Ensure that all budget with no expenses is correct."""
         response = self.client.get(reverse("budget"))
         saved = round(settings.ALLOWANCE * 3, 2)
-        left_per_day = round((settings.ALLOWANCE * 7)/5, 2)
+        left_per_day = round((settings.ALLOWANCE * 7) / 5, 2)
         expected = {
             "week": {"total": 0.0, "perDay": 0.0, "leftPerDay": left_per_day, "saved": saved},
             "month": {"total": 0.0, "perDay": 0.0, "leftPerDay": settings.ALLOWANCE, "saved": settings.ALLOWANCE},
-            "year": settings.ALLOWANCE
+            "year": {"leftPerDay": settings.ALLOWANCE, "perDay": 0.0, "saved": settings.ALLOWANCE, "total": 0.0},
         }
 
         self.assertEqual(response.data, expected)
