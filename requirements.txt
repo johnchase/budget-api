@@ -1,4 +1,4 @@
-Django>=2.2.7
+Django>=3.0.2
 django-rest-framework>=0.1.0
 freezegun>=0.3.12
 djangorestframework-jwt>=1.11.0
