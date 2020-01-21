@@ -39,7 +39,7 @@ class GetAllExpensesTest(BaseViewTest):
         self.create_expense(10, "2019-01-01", "item", "Amazon")
         self.create_expense(0.01, "2018-10-26", "gas", "shell")
 
-        response = self.client.get(reverse("expenses"))
+        response = self.client.get(reverse("expenses"), secure=True)
         expected = Expense.objects.all()
         serialized = ExpenseSerializer(expected, many=True)
         self.assertEqual(response.data, serialized.data)
@@ -52,7 +52,7 @@ class GetBudgetsTest(BaseViewTest):
     @freeze_time("2020-01-01")
     def test_get_budget(self):
         """Ensure that all budget with no expenses is correct."""
-        response = self.client.get(reverse("budget"))
+        response = self.client.get(reverse("budget"), secure=True)
         saved = round(settings.ALLOWANCE * 3, 2)
         left_per_day = round((settings.ALLOWANCE * 7) / 5, 2)
         expected = {
@@ -66,7 +66,7 @@ class GetBudgetsTest(BaseViewTest):
     @freeze_time("2020-01-01")
     def test_get_budget_1(self):
         """Ensure that all budget with no expenses is correct."""
-        response = self.client.get(reverse("budget"))
+        response = self.client.get(reverse("budget"), secure=True)
         saved = round(settings.ALLOWANCE * 3, 2)
         left_per_day = round((settings.ALLOWANCE * 7) / 5, 2)
         expected = {
