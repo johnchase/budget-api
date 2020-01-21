@@ -69,4 +69,4 @@ class BudgetView(generics.RetrieveAPIView):
         year_total = self.queryset.filter(date__gt=year_start).aggregate(total=Coalesce(Sum("amount"), 0))
         year_data = calculate_budgets(year_total["total"], today.day, num_year_days, per_day)
 
-        return Response(data={"week": week_data, "month": month_data, "year": year_data["saved"]})
+        return Response(data={"week": week_data, "month": month_data, "year": year_data})
