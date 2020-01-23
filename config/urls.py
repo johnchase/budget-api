@@ -21,9 +21,8 @@ from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 from budget.views import HomePageView
 
 urlpatterns = [
-    path(r'', HomePageView.as_view(), name='home'),
+    path(r"", HomePageView.as_view(), name="home"),
     path("admin/", admin.site.urls),
-    #    path("", admin.site.urls),
     path(r"", include("budget.urls")),
     path(r"api-token-auth/", obtain_jwt_token),
     path(r"api-token-refresh/", refresh_jwt_token),
