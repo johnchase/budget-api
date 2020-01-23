@@ -19,7 +19,7 @@ from django.views.generic.base import View
 
 
 class HomePageView(View):
-    def dispatch(request):
+    def dispatch(request, *args, **kwargs):
         return HttpResponse(status=200)
 
 
