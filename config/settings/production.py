@@ -15,6 +15,7 @@ if EC2_PRIVATE_IP:
     ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
 
 CORS_ORIGIN_ALLOW_ALL = False
+
 CORS_ORIGIN_WHITELIST = ("https://budget.johnhchase.com",)
 CORS_ALLOW_CREDENTIALS = True
 
