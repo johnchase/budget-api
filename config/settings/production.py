@@ -1,8 +1,7 @@
 from .base import *  # noqa: F403, F401
 import requests
 
-# ALLOWED_HOSTS = ["api.johnhchase.com"]
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["api.johnhchase.com"]
 
 DEBUG = False
 
