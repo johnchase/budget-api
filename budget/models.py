@@ -13,3 +13,6 @@ class Expense(models.Model):
     def __str__(self):
         """Represent the model as a string."""
         return "{} - {}".format(self.category, self.amount)
+
+    class Meta:
+        ordering = ["-date"]
