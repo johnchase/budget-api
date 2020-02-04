@@ -76,3 +76,15 @@ class GetBudgetsTest(BaseViewTest):
         }
 
         self.assertEqual(response.data, expected)
+
+    @freeze_time("2020-02-03")
+    def test_get_budget_2(self):
+        """Ensure that budgets in February are correct."""
+        self.create_expense(1000, "2020-01-02", "item", "Amazon")
+        response = self.client.get(reverse("budget"), secure=True)
+        expected = {
+            "week": {"total": 0.0, "perDay": 0.0, "leftPerDay": settings.ALLOWANCE, "saved": settings.ALLOWANCE},
+            "month": {"total": 0.0, "perDay": 0.0, "leftPerDay": 69.33, "saved": 193.65},
+            "year": {"leftPerDay": 67.95, "perDay": 29.41, "saved": 1194.7, "total": 1000},
+        }
+        self.assertEqual(response.data, expected)
