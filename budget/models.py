@@ -15,4 +15,6 @@ class Expense(models.Model):
         return "{} - {}".format(self.category, self.amount)
 
     class Meta:
+        """Meta class for ORM."""
+
         ordering = ["-date"]
