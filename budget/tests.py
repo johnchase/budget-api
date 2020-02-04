@@ -42,7 +42,7 @@ class GetAllExpensesTest(BaseViewTest):
         response = self.client.get(reverse("expenses"), secure=True)
         expected = Expense.objects.all()
         serialized = ExpenseSerializer(expected, many=True)
-        self.assertEqual(response.data, serialized.data)
+        self.assertEqual(response.data['results'], serialized.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
 
