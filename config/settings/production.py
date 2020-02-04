@@ -5,6 +5,8 @@ ALLOWED_HOSTS = ["api.johnhchase.com"]
 
 DEBUG = False
 
+SECURE_SSL_REDIRECT = True
+
 EC2_PRIVATE_IP = None
 try:
     EC2_PRIVATE_IP = requests.get("http://169.254.169.254/latest/meta-data/local-ipv4", timeout=0.01).text
