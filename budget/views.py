@@ -19,7 +19,10 @@ from django.views.generic.base import View
 
 
 class HomePageView(View):
+    """Class for aws eb health check."""
+
     def dispatch(request, *args, **kwargs):
+        """Provide generic endpoint that returns 200 for health checker."""
         return HttpResponse(status=200)
 
 
@@ -73,8 +76,8 @@ class BudgetView(generics.RetrieveAPIView):
         month_data = calculate_budgets(month_total["total"], today.day, num_month_days, per_day)
 
         year_start = datetime.date(today.year, 1, 1)
-        num_year_days = datetime.datetime.now().timetuple().tm_yday
         year_total = self.queryset.filter(date__gt=year_start).aggregate(total=Coalesce(Sum("amount"), 0))
-        year_data = calculate_budgets(year_total["total"], today.day, num_year_days, per_day)
+        day_of_year = datetime.datetime.now().timetuple().tm_yday
+        year_data = calculate_budgets(year_total["total"], day_of_year, 365, per_day)
 
         return Response(data={"week": week_data, "month": month_data, "year": year_data})
