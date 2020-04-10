@@ -4,15 +4,13 @@ import calendar
 
 from rest_framework import generics
 from rest_framework.response import Response
-from rest_framework.views import status
 
 from django.db.models.functions import Coalesce
 from django.db.models import Sum
-from django.conf import settings
 
 from budget.models import Expense
 from budget.serializers import ExpenseSerializer
-from budget.util import calculate_budgets
+from budget.util import calculate_budgets, get_budget_summary, get_expenses
 from django.http import HttpResponse
 
 from django.views.generic.base import View
@@ -29,17 +27,12 @@ class HomePageView(View):
 class ListCreateExpenseView(generics.ListCreateAPIView):
     """Class for getting all expenses.
 
-    GET expense/
-    POST expense/
+    GET expenses/
+    POST expenses/
     """
 
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
-
-    def post(self, request, *args, **kwargs):
-        """Post request data."""
-        expense = Expense.objects.create(**request.data)
-        return Response(data=ExpenseSerializer(expense).data, status=status.HTTP_201_CREATED)
 
 
 class ExpenseDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -58,26 +51,74 @@ class ExpenseDetailView(generics.RetrieveUpdateDestroyAPIView):
 class BudgetView(generics.RetrieveAPIView):
     """Class to return budget numbers for the week and month."""
 
-    #    permission_classes = (IsAuthenticated,)
     queryset = Expense.objects.all()
 
     def get(self, request, *args, **kwargs):
         """Retrieve a single expense."""
         today = datetime.date.today()
-        per_day = settings.ALLOWANCE
+        month = today.month
+        year = today.year
+        # Per day for the current month is based on the expenditures from the previous month
+        if month == 12:
+            month = 1
+        else:
+            month -= 1
 
-        week_start = today - datetime.timedelta(days=today.weekday())
-        day_of_the_week = (today - week_start).days + 1
-        week_total = self.queryset.filter(date__gt=week_start).aggregate(total=Coalesce(Sum("amount"), 0))
-        week_data = calculate_budgets(week_total["total"], day_of_the_week, 7, per_day)
+        per_day = 14
+
+        num_month_days = calendar.monthrange(year, today.month)[1]
+        per_day = get_expenses(self.queryset, month, year) / num_month_days
+
         month_start = today.replace(day=1)
-        num_month_days = calendar.monthrange(today.year, today.month)[1]
         month_total = self.queryset.filter(date__gt=month_start).aggregate(total=Coalesce(Sum("amount"), 0))
         month_data = calculate_budgets(month_total["total"], today.day, num_month_days, per_day)
 
-        year_start = datetime.date(today.year, 1, 1)
-        year_total = self.queryset.filter(date__gt=year_start).aggregate(total=Coalesce(Sum("amount"), 0))
-        day_of_year = datetime.datetime.now().timetuple().tm_yday
-        year_data = calculate_budgets(year_total["total"], day_of_year, 365, per_day)
+        return Response(data=month_data)
 
-        return Response(data={"week": week_data, "month": month_data, "year": year_data})
+
+class SummaryView(generics.RetrieveAPIView):
+    """Class for controlling single expense.
+
+    GET summary/
+    """
+
+    queryset = Expense.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        """Get the summary data for the current month."""
+        result = get_budget_summary(self.queryset)
+
+        return Response(result)
+
+
+class PerDiemView(generics.RetrieveAPIView):
+    """Class for controlling single expense.
+
+    GET perDiem/
+    """
+
+    queryset = Expense.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        """Get the summary data for the current month."""
+        month = datetime.datetime.today().month
+        year = datetime.datetime.today().year
+
+        days_next_month = calendar.monthrange(year, month)[1]
+        daily = get_expenses(self.queryset)
+        daily = daily / days_next_month
+        return Response(round(daily, 2))
+
+
+class SavingsView(generics.RetrieveAPIView):
+    """Class for controlling single expense.
+
+    GET saved/
+    """
+
+    queryset = Expense.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        """Get the total amount saved for the year."""
+        result = get_expenses(self.queryset, budget_calculation=True, expense_calculation=True, month=False)
+        return Response(result)
