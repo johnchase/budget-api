@@ -5,12 +5,11 @@ import calendar
 from rest_framework import generics
 from rest_framework.response import Response
 
-from django.db.models.functions import Coalesce
 from django.db.models import Sum
 
 from budget.models import Expense
 from budget.serializers import ExpenseSerializer
-from budget.util import calculate_budgets, get_budget_summary, get_expenses
+from budget.util import get_per_day, calculate_budgets
 from django.http import HttpResponse
 
 from django.views.generic.base import View
@@ -56,24 +55,8 @@ class BudgetView(generics.RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         """Retrieve a single expense."""
         today = datetime.date.today()
-        month = today.month
-        year = today.year
-        # Per day for the current month is based on the expenditures from the previous month
-        if month == 12:
-            month = 1
-        else:
-            month -= 1
-
-        per_day = 14
-
-        num_month_days = calendar.monthrange(year, today.month)[1]
-        per_day = get_expenses(self.queryset, month, year) / num_month_days
-
-        month_start = today.replace(day=1)
-        month_total = self.queryset.filter(date__gt=month_start).aggregate(total=Coalesce(Sum("amount"), 0))
-        month_data = calculate_budgets(month_total["total"], today.day, num_month_days, per_day)
-
-        return Response(data=month_data)
+        result = calculate_budgets(self.queryset, today.month, today.year)
+        return Response(result)
 
 
 class SummaryView(generics.RetrieveAPIView):
@@ -86,9 +69,18 @@ class SummaryView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         """Get the summary data for the current month."""
-        result = get_budget_summary(self.queryset)
+        today = datetime.date.today()
+        month = today.month
+        year = today.year
 
-        return Response(result)
+        results = (
+            self.queryset.filter(date__year=year, date__month=month)
+            .values("budget_category")
+            .annotate(amount=Sum("amount"))
+        )
+
+        data = {result["budget_category"]: result["amount"] for result in results}
+        return Response(data)
 
 
 class PerDiemView(generics.RetrieveAPIView):
@@ -101,13 +93,19 @@ class PerDiemView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         """Get the summary data for the current month."""
-        month = datetime.datetime.today().month
-        year = datetime.datetime.today().year
+        month = int(request.GET["month"])
+        year = int(request.GET["year"])
+        total = get_per_day(self.queryset, month, year)
 
-        days_next_month = calendar.monthrange(year, month)[1]
-        daily = get_expenses(self.queryset)
-        daily = daily / days_next_month
-        return Response(round(daily, 2))
+        if month == 12:
+            month = 1
+            year += 1
+        else:
+            month += 1
+        num_month_days = calendar.monthrange(year, month)[1]
+        per_day = total / num_month_days
+
+        return Response(per_day)
 
 
 class SavingsView(generics.RetrieveAPIView):
@@ -120,5 +118,8 @@ class SavingsView(generics.RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         """Get the total amount saved for the year."""
-        result = get_expenses(self.queryset, budget_calculation=True, expense_calculation=True, month=False)
-        return Response(result)
+        today = datetime.date.today()
+        saved = 0
+        for month in range(1, today.month + 1):
+            saved += calculate_budgets(self.queryset, month, today.year)["saved"]
+        return Response(saved)

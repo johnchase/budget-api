@@ -22,6 +22,6 @@ urlpatterns = [
     path("expenses/", ListCreateExpenseView.as_view(), name="expenses"),
     path("budget/", BudgetView.as_view(), name="budget"),
     path("summary/", SummaryView.as_view(), name="summary"),
-    path("perDiem/", PerDiemView.as_view(), name="summary"),
-    path("saved/", SavingsView.as_view(), name="summary"),
+    path("perDiem/", PerDiemView.as_view(), name="perDiem"),
+    path("saved/", SavingsView.as_view(), name="saved"),
 ]
