@@ -105,9 +105,9 @@ class TestListCreateExpenseView(BaseViewTest):
             "description": "",
             "budget_calculation": "",
         }
-        url = "/expenses/"
+        url = "expenses"
 
-        response = self.client.post(url, data, format="json")
+        response = self.client.post(reverse(url), data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["budget_category"], "Expenses")
 
