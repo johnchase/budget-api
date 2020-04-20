@@ -286,27 +286,3 @@ class TestSavingsView(BaseViewTest):
         expected = 100
 
         self.assertEqual(response.data, expected)
-
-
-#
-#    @freeze_time("2020-01-11")
-#    def test_get_saved_3(self):
-#        """Ensure that summary is correct."""
-#        Expense.objects.create(
-#            amount=3000,
-#            date=datetime.datetime(2019, 12, 15, 8, 15, 12, 0, pytz.UTC),
-#            category="Paycheck",
-#            budget_category="Income",
-#            budget_calculation=True,
-#        )
-#
-#        Expense.objects.create(
-#            amount=1000,
-#            date=datetime.datetime(2020, 1, 10, 8, 15, 12, 0, pytz.UTC),
-#            category="Items",
-#            budget_category="Purchase",
-#        )
-#        response = self.client.get(reverse("saved"), secure=True)
-#        expected = 2000
-#
-#        self.assertEqual(response.data, expected)

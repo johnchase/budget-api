@@ -76,10 +76,11 @@ class SummaryView(generics.RetrieveAPIView):
         results = (
             self.queryset.filter(date__year=year, date__month=month)
             .values("budget_category")
-            .annotate(amount=Sum("amount"))
+            .annotate(new_amount=Sum("amount"))
+            .order_by("budget_category")
         )
 
-        data = {result["budget_category"]: result["amount"] for result in results}
+        data = {result["budget_category"]: result["new_amount"] for result in results}
         return Response(data)
 
 
