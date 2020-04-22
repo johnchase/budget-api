@@ -7,18 +7,17 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Expenses',
+            name="Expenses",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.FloatField()),
-                ('date', models.DateField()),
-                ('category', models.CharField(max_length=50)),
-                ('business', models.CharField(max_length=50, null=True)),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("amount", models.FloatField()),
+                ("date", models.DateField()),
+                ("category", models.CharField(max_length=50)),
+                ("business", models.CharField(max_length=50, null=True)),
             ],
         ),
     ]

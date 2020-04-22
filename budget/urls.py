@@ -15,10 +15,13 @@ Including another URLconf
 
 """
 from django.urls import path
-from budget.views import ListCreateExpenseView, ExpenseDetailView, BudgetView
+from budget.views import ListCreateExpenseView, ExpenseDetailView, BudgetView, SummaryView, PerDiemView, SavingsView
 
 urlpatterns = [
-    path("expenses/<int:pk>/", ExpenseDetailView.as_view(), name="songs-detail"),
+    path("expenses/<int:pk>/", ExpenseDetailView.as_view(), name="expense-detail"),
     path("expenses/", ListCreateExpenseView.as_view(), name="expenses"),
     path("budget/", BudgetView.as_view(), name="budget"),
+    path("summary/", SummaryView.as_view(), name="summary"),
+    path("perDiem/", PerDiemView.as_view(), name="perDiem"),
+    path("saved/", SavingsView.as_view(), name="saved"),
 ]
